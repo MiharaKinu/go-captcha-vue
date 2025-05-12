@@ -21,7 +21,7 @@
       </div>
     </div>
     <div
-      class="gc-body"
+      :class="`gc-body ${innerTips.type == 'SUCCESS' && innerTips.show ? 'shine-effect-tr-bl' : ''}`"
       ref="containerRef"
       :style="imageStyles"
     >
@@ -34,6 +34,11 @@
         :style="imageStyles"
         :src="localData.image"
         alt=""
+      />
+      <Tips
+        v-model:show="innerTips.show"
+        :content="innerTips.content"
+        :type="innerTips.type"
       />
       <div
         class="gc-tile"
@@ -82,6 +87,13 @@ import {defaultSlideData, SlideData} from "./meta/data";
 import {SlideEvent} from "./meta/event";
 import {SlideExpose} from "./meta/expose";
 import {useHandler} from "./hooks/handler";
+import Tips from "../base/Tips.vue";
+
+const innerTips = reactive({
+  show: false,
+  content: '',
+  type: 'SUCCESS',
+})
 
 // @ts-ignore
 const props = withDefaults(
@@ -197,6 +209,11 @@ defineExpose<SlideExpose>({
   clear: handler.clearData,
   refresh: handler.refresh,
   close: handler.close,
+  setTips: (show: boolean, content: string, type: string) => {
+    innerTips.show = show
+    innerTips.content = content
+    innerTips.type = type
+  }
 });
 </script>
 
